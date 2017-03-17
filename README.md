@@ -2,7 +2,7 @@
 DS18B20 One-Wire temperature sensor configuration
 #
 # Hardware Required
-    * Raspberry PI 3
+    * Raspberry Pi
     * DS18B20 Sensor
     * 1x 4,7KΩ Resistor
     * Breadboard
