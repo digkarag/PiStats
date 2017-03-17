@@ -25,9 +25,20 @@ def read_temp():
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
         temp_f = temp_c * 9.0 / 5.0 + 32.0
+        round(temp_c, 1)
+        round(temp_f, 1)
         return temp_c, temp_f
 
 while True:
-        print('TEMPERATURE:')
-	print(read_temp())
-	time.sleep(1)
+        deg_c , deg_f = read_temp()
+        deg_f = ("%.1f" % deg_f)
+        deg_c = ("%.1f" % deg_c)
+        print("--------------------------------")
+        print(time.strftime("%H:%M:%S"))
+        print(time.strftime("%d/%m/%Y"))
+        print
+        print('TEMPERATURE IN CELSIUS:     ' + str(deg_c))
+        print('TEMPERATURE IN FAHRENHEIT:  ' +str(deg_f))
+        print("--------------------------------")
+	print
+        time.sleep(3)
