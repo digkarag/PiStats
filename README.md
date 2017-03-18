@@ -11,3 +11,6 @@ DS18B20 One-Wire temperature sensor configuration.
 
 ## Sensor Setup
 ![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/Sensor%20setup.png)
+
+## User Interface
+![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/UI.png)
