@@ -1,4 +1,7 @@
-### PiStats ,Finding and research on environmental statistics using Raspberry PI 3
+### Welcome to the PiStats wiki!
+#
+### PiStats    
+Finding and research on environmental statistics using Raspberry PI 3
 DS18B20 One-Wire temperature sensor configuration.  
 **one-wire support needed** (raspberry pi configuration menu.)
 #
@@ -13,4 +16,7 @@ DS18B20 One-Wire temperature sensor configuration.
 ![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/Sensor%20setup.png)
 
 ## User Interface
+We use ubidots IoT cloud platform for the user interface.  
+Example below:  
+  
 ![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/UI.png)
