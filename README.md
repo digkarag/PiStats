@@ -1,8 +1,6 @@
 # PiStats    
 Finding and research on environmental statistics using Raspberry PI 3.  
-  
-#
-# Version 1
+## Version 1
 DS18B20 One-Wire temperature sensor configuration.  
 **one-wire support needed** (raspberry pi configuration menu.)
 #
@@ -23,7 +21,7 @@ Example below:
 ![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/UI.png)
   
   
-# Version 2  
+## Version 2  
 DHT11 Temperature and Humidity Sensor.  
 ## Hardware Required
     * Raspberry Pi
