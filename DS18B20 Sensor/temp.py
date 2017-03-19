@@ -1,7 +1,22 @@
 import os
 import glob
 import time
+import RPi.GPIO as GPIO
 from ubidots import ApiClient
+from requests.exceptions import ConnectionError
+
+import signal
+import sys
+
+# signal handler for Ctrl+C to close leds
+def signal_handler(signal, frame):
+    print('You pressed Ctrl+C!')
+    GPIO.output(27,GPIO.LOW)
+    GPIO.output(17,GPIO.LOW)
+    GPIO.output(22,GPIO.LOW)
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -28,25 +43,54 @@ def read_temp():
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
         temp_f = temp_c * 9.0 / 5.0 + 32.0
-        round(temp_c, 1)
-        temp_c = ("%.1f" % temp_c)
-        return float(temp_c)
+        temp_c = round(temp_c, 1)
+        return temp_c
 
-# Ubidots connection
-api = ApiClient(token="peXr4PTbhJl1A2AEJxHc0xQGQMxVcD")
+try:
+    # Ubidots connection
+    api = ApiClient(token="peXr4PTbhJl1A2AEJxHc0xQGQMxVcD")
+    # Create variable
+    temp = api.get_variable("58cd1a6c76254225983f07a1")
+except ConnectionError as e:
+    print e
 
-# Create variable
-temp = api.get_variable("58cd1a6c76254225983f07a1")
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(17,GPIO.OUT)
+GPIO.setup(27,GPIO.OUT)
+GPIO.setup(22,GPIO.OUT)
 
 while True:
+
+    # Green Led ON
+    GPIO.output(17,GPIO.HIGH)
+    time.sleep(1)
 
     # read temperature from sensor
     deg_c = read_temp()
 
-    # save temperature and send to ubidots
-    temp.save_value({"value": deg_c})
+    try:
+        # save temperature and send to ubidots
+        temp.save_value({"value": deg_c})
 
-    '''
+        # Red Led OFF
+        GPIO.output(27,GPIO.LOW)
+        # Yellow Led OFF
+        GPIO.output(22,GPIO.LOW)
+
+    except  ConnectionError as e:
+
+        print e
+        # Red Led ON
+        GPIO.output(27,GPIO.HIGH)
+
+    except ValueError as es:
+
+        print es
+        # Yellow Led ON
+        GPIO.output(22,GPIO.HIGH)
+
+
     # Print functions
     print("--------------------------------")
     print(time.strftime("%H:%M:%S"))
@@ -55,5 +99,7 @@ while True:
     print('TEMPERATURE IN CELSIUS:     ' + str(deg_c))
     print("--------------------------------")
     print
-    time.sleep(0.1)
-    '''
+
+    # Green Led OFF
+    GPIO.output(17,GPIO.LOW)
+    time.sleep(1)
