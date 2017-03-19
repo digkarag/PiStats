@@ -12,10 +12,10 @@ DS18B20 One-Wire temperature sensor configuration.
     * Jumper Wires
 
 ## Sensor Setup
-![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/Sensor%20setup.png)
+![alt tag](https://github.com/digkarag/PiStats/blob/master/Sensor%20setup.png)
 
 ## User Interface
 We use ubidots IoT cloud platform for the user interface.  
 Example below:  
   
-![alt tag](https://github.com/digkarag/PiStats/blob/master/DS18B20%20Sensor/UI.png)
+![alt tag](https://github.com/digkarag/PiStats/blob/master/UI.png)
