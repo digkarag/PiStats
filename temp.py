@@ -8,7 +8,7 @@ from requests.exceptions import ConnectionError
 import signal
 import sys
 
-# signal handler for Ctrl+C to close leds
+#Signal handler for Ctrl+C to close leds
 def signal_handler(signal, frame):
     print('You pressed Ctrl+C!')
     GPIO.output(27,GPIO.LOW)
@@ -25,14 +25,14 @@ base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
-# read from w1_slave file
+#Read from w1_slave file
 def read_temp_raw():
     f = open(device_file, 'r')
     lines = f.readlines()
     f.close()
     return lines
 
-# extract and return temperature from w1_slave
+#Extract and return temperature from w1_slave
 def read_temp():
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
@@ -47,9 +47,9 @@ def read_temp():
         return temp_c
 
 try:
-    # Ubidots connection
+    #Ubidots connection
     api = ApiClient(token="peXr4PTbhJl1A2AEJxHc0xQGQMxVcD")
-    # Create variable
+    #Create variable
     temp = api.get_variable("58cd1a6c76254225983f07a1")
 except ConnectionError as e:
     print e
@@ -62,44 +62,46 @@ GPIO.setup(22,GPIO.OUT)
 
 while True:
 
-    # Green Led ON
+    #Green Led ON
     GPIO.output(17,GPIO.HIGH)
     time.sleep(1)
 
-    # read temperature from sensor
+    #Read temperature from sensor
     deg_c = read_temp()
 
     try:
-        # save temperature and send to ubidots
+        #Save temperature and send to ubidots
         temp.save_value({"value": deg_c})
-
-        # Red Led OFF
+        #Red Led OFF
         GPIO.output(27,GPIO.LOW)
-        # Yellow Led OFF
+        #Yellow Led OFF
         GPIO.output(22,GPIO.LOW)
 
-    except  ConnectionError as e:
-
-        print e
-        # Red Led ON
+    except  ConnectionError as ex:
+        print ex
+        #Red Led ON
         GPIO.output(27,GPIO.HIGH)
+    except ValueError as ex:
+        print ex1
+        #Yellow Led ON
+        GPIO.output(23,GPIO.HIGH
+                )
+    except ubidots.apiclient.UbidotsError404 as ex2:
+        print ex2
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
 
-    except ValueError as es:
+    except upidots.apiclient.UbidotsError500 as exs:
+        print exs
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
 
-        print es
-        # Yellow Led ON
-        GPIO.output(22,GPIO.HIGH)
-
-
-    # Print functions
-    print("--------------------------------")
-    print(time.strftime("%H:%M:%S"))
-    print(time.strftime("%d/%m/%Y"))
+    #Print functions
+    print("~~")
+    print(time.strftime("%H:%M:%S") +" , " + time.strftime("%d/%m/%Y"))
+    print('Temperature in Celsius: ' + str(deg_c))
     print
-    print('TEMPERATURE IN CELSIUS:     ' + str(deg_c))
-    print("--------------------------------")
-    print
 
-    # Green Led OFF
+    #Green Led OFF
     GPIO.output(17,GPIO.LOW)
     time.sleep(1)
