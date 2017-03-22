@@ -91,13 +91,13 @@ while True:
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
 
-    except upidots.apiclient.UbidotsError500 as exs:
-        print exs
+    except upidots.apiclient.UbidotsError500 as ex3:
+        print ex3
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
 
     #Print functions
-    print("~~")
+    print
     print(time.strftime("%H:%M:%S") +" , " + time.strftime("%d/%m/%Y"))
     print('Temperature in Celsius: ' + str(deg_c))
     print
