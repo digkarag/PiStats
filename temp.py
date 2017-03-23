@@ -4,21 +4,31 @@ import time
 import glob
 import signal
 import RPi.GPIO as GPIO
-
 from ubidots import ApiClient
 from requests.exceptions import ConnectionError
 
 
+
 #Signal handler for Ctrl+C to close leds
-def signal_handler(signal, frame):
-    print('You pressed Ctrl+C!')
+def signal_handler_Ctrl_C(signal, frame):
+    print(' You pressed Ctrl+C!')
+    # All Leds OFF
     GPIO.output(27,GPIO.LOW)
     GPIO.output(17,GPIO.LOW)
     GPIO.output(22,GPIO.LOW)
     sys.exit(0)
 
+def signal_handler_Ctrl_Z(signal, frame):
+    print(' Logfile check: complete')
+    # Blue Led OFF
+    GPIO.output(23,GPIO.LOW)
+    # Buzzer
+    GPIO.output(25,GPIO.HIGH)
+    time.sleep(0.5)
+    GPIO.output(25,GPIO.LOW)
 
-signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGINT, signal_handler_Ctrl_C)
+signal.signal(signal.SIGTSTP, signal_handler_Ctrl_Z)
 
 
 os.system('modprobe w1-gpio')
@@ -73,7 +83,13 @@ GPIO.setup(17,GPIO.OUT)
 GPIO.setup(27,GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
 GPIO.setup(23,GPIO.OUT)
+GPIO.setup(25,GPIO.OUT)
+GPIO.setup(24,GPIO.OUT) # White led
 
+# Buzzer
+GPIO.output(25,GPIO.HIGH)
+time.sleep(0.5)
+GPIO.output(25,GPIO.LOW)
 
 while True:
 
@@ -107,6 +123,7 @@ while True:
         GPIO.output(23,GPIO.HIGH)
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
+        time.sleep(10)
 
     except ValueError as ex1:
         print ex1
@@ -121,6 +138,8 @@ while True:
         GPIO.output(23,GPIO.HIGH)
         #Yellow Led ON
         GPIO.output(22,GPIO.HIGH)
+        time.sleep(10)
+
 
     except ubidots.apiclient.UbidotsError404 as ex2:
         print ex2
@@ -135,6 +154,8 @@ while True:
         GPIO.output(23,GPIO.HIGH)
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
+        time.sleep(10)
+
 
     except upidots.apiclient.UbidotsError500 as ex3:
         print ex3
@@ -149,6 +170,8 @@ while True:
         GPIO.output(23,GPIO.HIGH)
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
+        time.sleep(10)
+
 
     #Print functions
     print( time.strftime("%d/%m/%Y") + ", " + time.strftime("%H:%M:%S") + ", "
