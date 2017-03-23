@@ -51,14 +51,22 @@ try:
     api = ApiClient(token="peXr4PTbhJl1A2AEJxHc0xQGQMxVcD")
     #Create variable
     temp = api.get_variable("58cd1a6c76254225983f07a1")
-except ConnectionError as e:
-    print e
+except ConnectionError as errorconn:
+    print errorconn
+
+    #LogFile entry
+    file=open("logfile.txt","a")
+    file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
+    file.write(errorcon)
+    file.write()
+    file.close()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(17,GPIO.OUT)
 GPIO.setup(27,GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
+GPIO.setup(23,GPIO.OUT)
 
 while True:
 
@@ -81,23 +89,51 @@ while True:
         print ex
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
-    except ValueError as ex:
+
+        #LogFile entry
+        file=open("logfile.txt","a")
+        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(ex)
+        file.write()
+        file.close()
+
+    except ValueError as ex1:
         print ex1
         #Yellow Led ON
-        GPIO.output(23,GPIO.HIGH
-                )
+        GPIO.output(22,GPIO.HIGH)
+
+        #LogFile entry
+        file=open("logfile.txt","a")
+        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(ex1)
+        file.write()
+        file.close()
+
     except ubidots.apiclient.UbidotsError404 as ex2:
         print ex2
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
+
+        #LogFile entry
+        file=open("logfile.txt","a")
+        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(ex2)
+        file.write()
+        file.close()
 
     except upidots.apiclient.UbidotsError500 as ex3:
         print ex3
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
 
+        #LogFile entry
+        file=open("logfile.txt","a")
+        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(ex3)
+        fire.write()
+        file.close()
+
     #Print functions
-    print
     print(time.strftime("%H:%M:%S") +" , " + time.strftime("%d/%m/%Y"))
     print('Temperature in Celsius: ' + str(deg_c))
     print
