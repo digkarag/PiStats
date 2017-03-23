@@ -1,11 +1,12 @@
 import os
-import glob
+import sys
 import time
+import glob
+import signal
 import RPi.GPIO as GPIO
+
 from ubidots import ApiClient
 from requests.exceptions import ConnectionError
-import signal
-import sys
 
 
 #Signal handler for Ctrl+C to close leds
@@ -36,6 +37,7 @@ def read_temp_raw():
 
 
 #Extract and return temperature from w1_slave
+#Temp_f is optional value for fahrenheit degrees
 def read_temp():
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
@@ -60,9 +62,8 @@ except ConnectionError as errorconn:
     print errorconn
     #LogFile entry
     file=open("logfile.txt","a")
-    file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
-    file.write(errorcon)
-    file.write()
+    file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
+    file.write(str(errorconn)+'\n')
     file.close()
 
 #GPIO Initialization
@@ -95,56 +96,63 @@ while True:
 
     except  ConnectionError as ex:
         print ex
+
+        #LogFile entry
+        file=open("logfile.txt","a")
+        file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(str(ex)+'\n')
+        file.close()
+
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
 
-        #LogFile entry
-        file=open("logfile.txt","a")
-        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
-        file.write(ex)
-        file.write()
-        file.close()
-
     except ValueError as ex1:
         print ex1
+
+        #LogFile entry
+        file=open("logfile.txt","a")
+        file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(str(ex1)+'\n')
+        file.close()
+
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
         #Yellow Led ON
         GPIO.output(22,GPIO.HIGH)
 
-        #LogFile entry
-        file=open("logfile.txt","a")
-        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
-        file.write(ex1)
-        file.write()
-        file.close()
-
     except ubidots.apiclient.UbidotsError404 as ex2:
         print ex2
-        #Blue Led ON
-        GPIO.output(23,GPIO.HIGH)
 
         #LogFile entry
         file=open("logfile.txt","a")
-        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
-        file.write(ex2)
-        file.write()
+        file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(str(ex2)+'\n')
         file.close()
+
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
+        #Red Led ON
+        GPIO.output(27,GPIO.HIGH)
 
     except upidots.apiclient.UbidotsError500 as ex3:
         print ex3
-        #Blue Led ON
-        GPIO.output(23,GPIO.HIGH)
 
         #LogFile entry
         file=open("logfile.txt","a")
-        file.write(time.strftime("%H:%M:%D") +" , "+time.strftime("%d/%m/%Y"))
-        file.write(ex3)
-        file.write()
+        file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
+        file.write(str(ex3)+'\n')
         file.close()
 
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
+        #Red Led ON
+        GPIO.output(27,GPIO.HIGH)
+
     #Print functions
-    print(time.strftime("%H:%M:%S") +" , " + time.strftime("%d/%m/%Y"))
-    print('Temperature in Celsius: ' + str(deg_c))
-    print
+    print( time.strftime("%d/%m/%Y") + ", " + time.strftime("%H:%M:%S") + ", "
+            + 'Temperature in Celsius: ' + str(deg_c) + '\n')
 
     #Green Led OFF
     GPIO.output(17,GPIO.LOW)
