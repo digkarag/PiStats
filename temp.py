@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 from ubidots import ApiClient
 from requests.exceptions import ConnectionError
 
-
+time.sleep(30)
 
 #Signal handler for Ctrl+C to close leds
 def signal_handler_Ctrl_C(signal, frame):
@@ -112,6 +112,7 @@ while True:
 
     except  ConnectionError as ex:
         print ex
+        sys.stdout.flush()
 
         #LogFile entry
         file=open("logfile.txt","a")
@@ -127,6 +128,7 @@ while True:
 
     except ValueError as ex1:
         print ex1
+        sys.stdout.flush()
 
         #LogFile entry
         file=open("logfile.txt","a")
@@ -140,9 +142,9 @@ while True:
         GPIO.output(22,GPIO.HIGH)
         time.sleep(10)
 
-
     except ubidots.apiclient.UbidotsError404 as ex2:
         print ex2
+        sys.stdout.flush()
 
         #LogFile entry
         file=open("logfile.txt","a")
@@ -156,9 +158,9 @@ while True:
         GPIO.output(27,GPIO.HIGH)
         time.sleep(10)
 
-
     except upidots.apiclient.UbidotsError500 as ex3:
         print ex3
+        sys.stdout.flush()
 
         #LogFile entry
         file=open("logfile.txt","a")
@@ -172,10 +174,10 @@ while True:
         GPIO.output(27,GPIO.HIGH)
         time.sleep(10)
 
-
     #Print functions
     print( time.strftime("%d/%m/%Y") + ", " + time.strftime("%H:%M:%S") + ", "
             + 'Temperature in Celsius: ' + str(deg_c) + '\n')
+    sys.stdout.flush()
 
     #Green Led OFF
     GPIO.output(17,GPIO.LOW)
