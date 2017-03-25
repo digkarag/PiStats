@@ -7,22 +7,24 @@ import RPi.GPIO as GPIO
 from ubidots import ApiClient
 from requests.exceptions import ConnectionError
 
+#Sleep for autorun feature, waiting for OS loading time
 time.sleep(30)
 
 #Signal handler for Ctrl+C to close leds
 def signal_handler_Ctrl_C(signal, frame):
     print(' You pressed Ctrl+C!')
-    # All Leds OFF
+    #All Leds OFF
     GPIO.output(27,GPIO.LOW)
     GPIO.output(17,GPIO.LOW)
     GPIO.output(22,GPIO.LOW)
     sys.exit(0)
 
+#Signal handler for Ctrl+Z for LogFile indicator clear
 def signal_handler_Ctrl_Z(signal, frame):
     print(' Logfile check: complete')
-    # Blue Led OFF
+    #Blue Led OFF
     GPIO.output(23,GPIO.LOW)
-    # Buzzer
+    #Buzzer
     GPIO.output(25,GPIO.HIGH)
     time.sleep(0.5)
     GPIO.output(25,GPIO.LOW)
@@ -84,9 +86,9 @@ GPIO.setup(27,GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
 GPIO.setup(23,GPIO.OUT)
 GPIO.setup(25,GPIO.OUT)
-GPIO.setup(24,GPIO.OUT) # White led
+GPIO.setup(24,GPIO.OUT) #White led, not used yet
 
-# Buzzer
+#Buzzer, single beep at program startup
 GPIO.output(25,GPIO.HIGH)
 time.sleep(0.5)
 GPIO.output(25,GPIO.LOW)
