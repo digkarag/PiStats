@@ -12,7 +12,7 @@ DS18B20 One-Wire temperature sensor configuration.
     * Jumper Wires
 
 ## Sensor Setup
-![alt tag](https://github.com/digkarag/PiStats/blob/master/info/sensor-setup.png)
+![alt tag](https://github.com/digkarag/PiStats/blob/master/info/pistats-schematic.png)
 
 ## User Interface (optional)
 We use ubidots IoT cloud platform for the user interface.  
