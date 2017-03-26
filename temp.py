@@ -3,18 +3,30 @@ import sys
 import time
 import glob
 import signal
-import RPi.GPIO as GPIO
 import ubidots
+import RPi.GPIO as GPIO
 from requests.exceptions import ConnectionError
 
 #Sleep for autorun feature, waiting for OS loading time
 time.sleep(30)
+
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
+
+
+#GPIO Initialization
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(17,GPIO.OUT)
+GPIO.setup(27,GPIO.OUT)
+GPIO.setup(22,GPIO.OUT)
+GPIO.setup(23,GPIO.OUT)
+GPIO.setup(25,GPIO.OUT)
+GPIO.setup(24,GPIO.OUT)
 
 
 #Read from w1_slave file
@@ -62,6 +74,7 @@ def signal_handler_Ctrl_Z(signal, frame):
     time.sleep(0.5)
     GPIO.output(25,GPIO.LOW)
 
+
 signal.signal(signal.SIGINT, signal_handler_Ctrl_C)
 signal.signal(signal.SIGTSTP, signal_handler_Ctrl_Z)
 
@@ -71,29 +84,27 @@ try:
     api = ubidots.ApiClient(token="peXr4PTbhJl1A2AEJxHc0xQGQMxVcD")
     temp = api.get_variable("58cd1a6c76254225983f07a1")
 
-except ConnectionError as errorconn:
+    #White LED OFF
+    GPIO.output(24,GPIO.LOW)
 
-    print errorconn
+except Exception as error:
+
+    print error
+    #White Led ON
+    GPIO.output(24,GPIO.HIGH)
+    time.sleep(10)
     #LogFile entry
     file=open("logfile.txt","a")
     file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
-    file.write(str(errorconn)+'\n')
+    file.write(str(error)+'\n')
     file.close()
 
-#GPIO Initialization
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(17,GPIO.OUT)
-GPIO.setup(27,GPIO.OUT)
-GPIO.setup(22,GPIO.OUT)
-GPIO.setup(23,GPIO.OUT)
-GPIO.setup(25,GPIO.OUT)
-GPIO.setup(24,GPIO.OUT)
 
 #Buzzer, single beep at program startup
 GPIO.output(25,GPIO.HIGH)
 time.sleep(0.5)
 GPIO.output(25,GPIO.LOW)
+
 
 while True:
 
@@ -116,7 +127,7 @@ while True:
         #White Led OFF
         GPIO.output(24,GPIO.LOW)
 
-    except  ConnectionError as ex:
+    except ConnectionError as ex:
         print ex
         sys.stdout.flush()
 
@@ -128,8 +139,8 @@ while True:
 
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
-        #Red Led ON
-        GPIO.output(27,GPIO.HIGH)
+        #Yellow Led ON
+        GPIO.output(22,GPIO.HIGH)
         time.sleep(10)
 
     except ValueError as ex1:
@@ -176,8 +187,8 @@ while True:
 
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
-        #White Led ON
-        GPIO.output(24,GPIO.HIGH)
+        #Red Led ON
+        GPIO.output(27,GPIO.HIGH)
         time.sleep(10)
 
     except ubidots.UbidotsError400 as ex4:
@@ -192,10 +203,9 @@ while True:
 
         #Blue Led ON
         GPIO.output(23,GPIO.HIGH)
-        #White Led ON
-        GPIO.output(24,GPIO.HIGH)
+        #Red Led ON
+        GPIO.output(27,GPIO.HIGH)
         time.sleep(10)
-
 
     #Print functions
     print( time.strftime("%d/%m/%Y") + ", " + time.strftime("%H:%M:%S") + ", "
