@@ -54,8 +54,8 @@ def read_temp():
 
 
 #LogFile Function
-def LogFile(error):
-    file=open("logfile.txt","a")
+def logFile(error):
+    file=open("logfile.txt","a+")
     file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
     file.write(str(error)+'\n')
     file.close()
@@ -106,7 +106,7 @@ except Exception as error:
     time.sleep(10)
 
     #LogFile entry
-    LogFile(error)
+    logFile(error)
 
 #Buzzer, single beep at program startup
 GPIO.output(25,GPIO.HIGH)
@@ -141,7 +141,7 @@ while True:
         sys.stdout.flush()
 
         #LogFile entry
-        LogFile(ex)
+        logFile(ex)
 
         #Yellow Led ON
         GPIO.output(22,GPIO.HIGH)
@@ -153,7 +153,7 @@ while True:
         sys.stdout.flush()
 
         #LogFile entry
-        LogFile(ex1)
+        logFile(ex1)
 
         #Yellow Led ON
         GPIO.output(22,GPIO.HIGH)
@@ -165,7 +165,7 @@ while True:
         sys.stdout.flush()
 
         #LogFile entry
-        LogFile(ex2)
+        logFile(ex2)
 
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
@@ -177,7 +177,7 @@ while True:
         sys.stdout.flush()
 
         #LogFile entry
-        LogFile(ex3)
+        logFile(ex3)
 
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
@@ -189,7 +189,7 @@ while True:
         sys.stdout.flush()
 
         #LogFile entry
-        LogFile(ex4)
+        logFile(ex4)
 
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
@@ -201,7 +201,7 @@ while True:
         sys.stdout.flush()
 
         #LogFile entry
-        LogFile(ex5)
+        logFile(ex5)
 
         #Red Led ON
         GPIO.output(27,GPIO.HIGH)
