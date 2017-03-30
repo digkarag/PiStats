@@ -118,7 +118,7 @@ while True:
 
     #Green Led ON
     GPIO.output(17,GPIO.HIGH)
-    time.sleep(0.5)
+    time.sleep(2)
 
     #Read temperature from sensor
     deg_c = read_temp()
@@ -215,4 +215,4 @@ while True:
 
     #Green Led OFF
     GPIO.output(17,GPIO.LOW)
-    time.sleep(0.5)
+    time.sleep(2)
