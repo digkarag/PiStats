@@ -53,17 +53,6 @@ def read_temp():
         return temp_c
 
 
-#LogFile Function
-def logFile(error):
-    file=open("logfile.txt","a+")
-    file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y"))
-    file.write(str(error)+'\n')
-    file.close()
-
-    #Blue Led ON
-    GPIO.output(23,GPIO.HIGH)
-
-
 #Signal handler for Ctrl+C to close leds
 def signal_handler_Ctrl_C(signal, frame):
     print(' You pressed Ctrl+C!')
@@ -88,6 +77,24 @@ def signal_handler_Ctrl_Z(signal, frame):
 
 signal.signal(signal.SIGINT, signal_handler_Ctrl_C)
 signal.signal(signal.SIGTSTP, signal_handler_Ctrl_Z)
+
+
+#LogFile Function
+def logFile(error):
+    try:
+
+        file=open("logfile.txt","a+")
+        file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y")+" , ")
+        file.write(str(error)+'\n')
+        file.close()
+
+        #Blue Led ON
+        GPIO.output(23,GPIO.HIGH)
+
+    except Exception as error:
+
+        print error
+        sys.exit(0)
 
 
 #Ubidots Connection and valiable creation
