@@ -115,6 +115,11 @@ except Exception as error:
     #LogFile entry
     logFile(error)
 
+    #Red Led ON
+    GPIO.output(27,GPIO.HIGH)
+    time.sleep(10)
+
+
 #Buzzer, single beep at program startup
 GPIO.output(25,GPIO.HIGH)
 time.sleep(0.5)
