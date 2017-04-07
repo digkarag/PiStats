@@ -2,7 +2,7 @@
 Finding and research on environmental statistics using Raspberry PI 3.  
 #
 DS18B20 One-Wire temperature sensor configuration.  
-**one-wire support needed** (raspberry pi configuration menu.)
+**one-wire support needed**
 #
 ## Hardware Required
     * Raspberry Pi
