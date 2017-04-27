@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import glob
+import logging
 import signal
 import ubidots
 import RPi.GPIO as GPIO
@@ -81,6 +82,11 @@ signal.signal(signal.SIGTSTP, signal_handler_Ctrl_Z)
 
 #LogFile Function
 def logFile(error):
+    #I tried with logging python
+    logging.basicConfig(filename='logfile.txt',level=logging.ERROR);
+    logging.warnign(str(error) + '\n');
+
+
     try:
 
         file=open("logfile.txt","a+")
