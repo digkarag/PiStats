@@ -83,8 +83,8 @@ signal.signal(signal.SIGTSTP, signal_handler_Ctrl_Z)
 #LogFile Function
 def logFile(error):
     #I tried with logging python
-    logging.basicConfig(filename='logfile.txt',level=logging.ERROR);
-    logging.warnign(str(error) + '\n');
+    logging.basicConfig(filename='logfile.txt',level=logging.ERROR,format='%(asctime)s %(message)s',datefmt='%m/%d/%Y %I:%M:%S %p');
+    logging.warnign(str(error));
 
 
     try:
