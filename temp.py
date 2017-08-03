@@ -26,7 +26,6 @@ GPIO.setup(27,GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
 GPIO.setup(23,GPIO.OUT)
 GPIO.setup(25,GPIO.OUT)
-GPIO.setup(24,GPIO.OUT)
 
 
 #Read from w1_slave file
@@ -55,20 +54,21 @@ def read_temp():
 
 #Signal handler for Ctrl+C to close leds
 def signal_handler_Ctrl_C(signal, frame):
-    print(' You pressed Ctrl+C!')
+    #print(' You pressed Ctrl+C!')
     #All Leds OFF
     GPIO.output(27,GPIO.LOW)
     GPIO.output(17,GPIO.LOW)
     GPIO.output(22,GPIO.LOW)
-    GPIO.output(24,GPIO.LOW)
+    GPIO.output(23,GPIO.LOW)
+    GPIO.output(25,GPIO.LOW)
     sys.exit(0)
 
 
 #Signal handler for Ctrl+Z for LogFile indicator clear
 def signal_handler_Ctrl_Z(signal, frame):
-    print(' Logfile check: complete')
-    #Blue Led OFF
-    GPIO.output(23,GPIO.LOW)
+    #print(' Logfile check: complete')
+    #White Led OFF
+    GPIO.output(22,GPIO.LOW)
     #Buzzer
     GPIO.output(25,GPIO.HIGH)
     time.sleep(0.5)
@@ -83,17 +83,17 @@ signal.signal(signal.SIGTSTP, signal_handler_Ctrl_Z)
 def logFile(error):
     try:
 
-        file=open("logfile.txt","a+")
+        file=open('logfile.txt',"a+")
         file.write(time.strftime("%H:%M:%S") +" , "+time.strftime("%d/%m/%Y")+" , ")
         file.write(str(error)+'\n')
         file.close()
 
-        #Blue Led ON
-        GPIO.output(23,GPIO.HIGH)
+        #White Led ON
+        GPIO.output(22,GPIO.HIGH)
 
     except Exception as error:
 
-        print error
+        #print error
         sys.exit(0)
 
 
@@ -102,22 +102,18 @@ try:
     api = ubidots.ApiClient(token="peXr4PTbhJl1A2AEJxHc0xQGQMxVcD")
     temp = api.get_variable("58cd1a6c76254225983f07a1")
 
-    #White LED OFF
-    GPIO.output(24,GPIO.LOW)
+    #Yellow LED OFF
+    GPIO.output(23,GPIO.LOW)
 
 except Exception as error:
 
-    print error
-    #White Led ON
-    GPIO.output(24,GPIO.HIGH)
+    #print error
+    #Yellow Led ON
+    GPIO.output(23,GPIO.HIGH)
     time.sleep(10)
 
     #LogFile entry
     logFile(error)
-
-    #Red Led ON
-    GPIO.output(27,GPIO.HIGH)
-    time.sleep(10)
 
 
 #Buzzer, single beep at program startup
@@ -143,74 +139,72 @@ while True:
         #Red Led OFF
         GPIO.output(27,GPIO.LOW)
         #Yellow Led OFF
-        GPIO.output(22,GPIO.LOW)
-        #White Led OFF
-        GPIO.output(24,GPIO.LOW)
+        GPIO.output(23,GPIO.LOW)
 
     except ConnectionError as ex:
-        print("Connection error"+"\n")
-        print ex
-        sys.stdout.flush()
+        #print("Connection error"+"\n")
+        #print ex
+        #sys.stdout.flush()
 
         #LogFile entry
         logFile(ex)
 
-        #Yellow Led ON
-        GPIO.output(22,GPIO.HIGH)
+        #Red Led ON
+        GPIO.output(27,GPIO.HIGH)
         time.sleep(10)
 
     except ValueError as ex1:
-        print("ValueError"+"\n")
-        print ex1
-        sys.stdout.flush()
+        #print("ValueError"+"\n")
+        #print ex1
+        #sys.stdout.flush()
 
         #LogFile entry
         logFile(ex1)
 
         #Yellow Led ON
-        GPIO.output(22,GPIO.HIGH)
+        GPIO.output(23,GPIO.HIGH)
         time.sleep(10)
 
     except ubidots.UbidotsError500 as ex2:
-        print("Ubidots Error 500"+"\n")
-        print ex2
-        sys.stdout.flush()
+        #print("Ubidots Error 500"+"\n")
+        #print ex2
+        #sys.stdout.flush()
 
         #LogFile entry
         logFile(ex2)
 
-        #Red Led ON
-        GPIO.output(27,GPIO.HIGH)
+        #Yellow Led ON
+        GPIO.output(23,GPIO.HIGH)
         time.sleep(10)
 
     except ubidots.UbidotsError404 as ex3:
-        print("Ubidots Error 404"+"\n")
-        print ex3
-        sys.stdout.flush()
+        #print("Ubidots Error 404"+"\n")
+        #print ex3
+        #sys.stdout.flush()
 
         #LogFile entry
         logFile(ex3)
 
-        #Red Led ON
-        GPIO.output(27,GPIO.HIGH)
+        #Yellow Led ON
+        GPIO.output(23,GPIO.HIGH)
         time.sleep(10)
 
     except ubidots.UbidotsError400 as ex4:
-        print("Ubidots Error 400"+"\n")
-        print ex4
-        sys.stdout.flush()
+        #print("Ubidots Error 400"+"\n")
+        #print ex4
+        #sys.stdout.flush()
 
         #LogFile entry
         logFile(ex4)
 
-        #Red Led ON
-        GPIO.output(27,GPIO.HIGH)
+        #Yellow Led ON
+        GPIO.output(23,GPIO.HIGH)
         time.sleep(10)
 
     except Exception as ex5:
-        print("General Exception"+"\n")
-        print ex5
-        sys.stdout.flush()
+        #print("General Exception"+"\n")
+        #print ex5
+        #sys.stdout.flush()
 
         #LogFile entry
         logFile(ex5)
@@ -221,9 +215,9 @@ while True:
 
 
     #Print functions
-    print( time.strftime("%d/%m/%Y") + ", " + time.strftime("%H:%M:%S") + ", "
-            + 'Temperature in Celsius: ' + str(deg_c) + '\n')
-    sys.stdout.flush()
+    #print( time.strftime("%d/%m/%Y") + ", " + time.strftime("%H:%M:%S") + ", "
+    #       + 'Temperature in Celsius: ' + str(deg_c) + '\n')
+    #sys.stdout.flush()
 
     #Green Led OFF
     GPIO.output(17,GPIO.LOW)
