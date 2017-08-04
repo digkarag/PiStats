@@ -10,7 +10,7 @@ from requests.exceptions import ConnectionError
 #Sleep for autorun feature, waiting for OS loading time
 time.sleep(30)
 
-
+#System files for sensor input
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 base_dir = '/sys/bus/w1/devices/'
@@ -21,11 +21,11 @@ device_file = device_folder + '/w1_slave'
 #GPIO Initialization
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(17,GPIO.OUT)
-GPIO.setup(27,GPIO.OUT)
-GPIO.setup(22,GPIO.OUT)
-GPIO.setup(23,GPIO.OUT)
-GPIO.setup(25,GPIO.OUT)
+GPIO.setup(17,GPIO.OUT) #Green Led: System Run indicator
+GPIO.setup(27,GPIO.OUT) #Red Led: Connection Error
+GPIO.setup(22,GPIO.OUT) #White Led: Logfile Entry
+GPIO.setup(23,GPIO.OUT) #Yellow Led: Ubidots Error
+GPIO.setup(25,GPIO.OUT) #Buzzer
 
 
 #Read from w1_slave file
