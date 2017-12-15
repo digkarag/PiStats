@@ -8,16 +8,15 @@ import datetime
 import RPi.GPIO as GPIO
 import requests
 
-from data import posturl
-url = posturl
+url = "http://things.ubidots.com/api/v1.6/devices/ZeroW/?token=A1E-ZCaNbMJodCnxdT2GPU53PIDkUSwnma"
 
 #GPIO Initialization
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-#Signal handler for Ctrl+C to close leds
+#Signal handler for Ctrl+C
 def signal_handler_Ctrl_C(signal, frame):
-    #print(' You pressed Ctrl+C!')
+    print(' You pressed Ctrl+C!')
     GPIO.cleanup()
     sys.exit(0)
 
@@ -34,10 +33,12 @@ while True:
             humidity = result.humidity
             payload ={'Humidity': humidity}
             response = requests.post(url,data=payload)
-            print response
         except Exception as ex:
             time.sleep(5)
-            
-        print result.humidity
         time.sleep(1)
+
+        #Test prints
+        print response
+        print result.humidity
+
     time.sleep(1)
