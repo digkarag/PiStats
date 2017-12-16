@@ -41,4 +41,4 @@ while True:
         print response
         print result.humidity
 
-    time.sleep(1)
+    time.sleep(10)
